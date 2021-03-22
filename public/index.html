@@ -8,17 +8,8 @@
     <div>
 
         <div style="margin-left: 30px;">
-            <div>
-                Customer Type:
-                <select id="customerType">
-                    <option value="0121m000000cckyAAA">Prospect</option>
-                    <option value="0121m000000ccl3AAA">Member</option>
-                </select>
-            </div>
             KDCE_ExternalId__c: <input type='text' id="KDCE_ExternalId__c" value=""/><br/>
             Name: <input type='text' id="lastName" value=""/><br/>
-            Birthdate: <input type='date' id="birthdate" value="1991-07-18"/><br/>
-            Phone : <input type='text' id="phone" value=""/><br/>
             Email : <input type='text' id="email" value=""/><br/>
             Subject : <input type='text' id="subject" value=""/><br/>
             <div>
@@ -98,13 +89,27 @@
 
 <script type='text/javascript'>
     (function () {
+        //Source URL
+        let wetChatUrl = 'https://pmk-dce-wetchat.herokuapp.com/';
+        let customerType;
         document.getElementById('startChat').onclick = function () {
             let extraPrechatFormDetails = [
+
+                /**
+                 * 로그인 했을 경우에 이름과 External Id만 전달
+                 *
+                 */
+
                 {
                     "label": "KDCE_ExternalId__c",
                     "value": document.getElementById('KDCE_ExternalId__c').value,
                     "displayToAgent": false
                 },
+
+                /**
+                 *  Form에서 입력 받는 값
+                 *
+                 */
                 {
                     "label": "First Name",
                     "value": document.getElementById('lastName').value,
@@ -121,24 +126,23 @@
                     "displayToAgent": false
                 },
                 {
-                    "label": "Phone",
-                    "value": document.getElementById('phone').value,
-                    "displayToAgent": false
-                },
-                {
-                    "label": "Birthdate",
-                    "value": document.getElementById('birthdate').value,
-                    "displayToAgent": false
-                },
-                {
-                    "label": "customerType",
-                    "value": document.getElementById('customerType').value,
-                    "displayToAgent": false
-                },
-                {
                     "label": "Subject",
                     "value": document.getElementById('subject').value,
                     "displayToAgent": true
+                },
+                {
+                    "label": "CaseType",
+                    "value": document.getElementById('caseType').value,
+                    "displayToAgent": false
+                },
+                /**
+                 * 고정 값
+                 *
+                 */
+                {
+                    "label": "Source URL",
+                    "value": wetChatUrl,
+                    "displayToAgent": false
                 },
                 {
                     "label": "Status",
@@ -154,13 +158,10 @@
                     "value": "Chat",
                     "displayToAgent": false
                 },
-                {
-                    "label": "CaseType",
-                    "value": document.getElementById('caseType').value,
-                    "displayToAgent": false
-                },
+
             ];
             let extraPrechatInfo;
+            //로그인 했을 경
             if (document.getElementById('KDCE_ExternalId__c').value !== null
                 && document.getElementById('KDCE_ExternalId__c').value !== '') {
                 extraPrechatInfo =
@@ -214,10 +215,10 @@
                                 },
                                 {
                                     "isExactMatch": false,
-                                    "fieldName": "Subject",
+                                    "fieldName": "RecordTypeId",
                                     "doCreate": true,
                                     "doFind": false,
-                                    "label": "Subject"
+                                    "label": "CaseType"
                                 },
                                 {
                                     "isExactMatch": false,
@@ -239,14 +240,7 @@
                                     "doCreate": true,
                                     "doFind": false,
                                     "label": "CCR_ContactType__c"
-                                },
-                                {
-                                    "isExactMatch": false,
-                                    "fieldName": "RecordTypeId",
-                                    "doCreate": true,
-                                    "doFind": false,
-                                    "label": "CaseType"
-                                },
+                                }
                             ]
                         }
                     ];
@@ -300,6 +294,21 @@
                                 },
                                 {
                                     "isExactMatch": false,
+                                    "fieldName": "Subject",
+                                    "doCreate": true,
+                                    "doFind": false,
+                                    "label": "Subject"
+                                },
+                                {
+                                    "isExactMatch": false,
+                                    "fieldName": "RecordTypeId",
+                                    "doCreate": true,
+                                    "doFind": false,
+                                    "label": "CaseType"
+                                },
+
+                                {
+                                    "isExactMatch": false,
                                     "fieldName": "Status",
                                     "doCreate": true,
                                     "doFind": false,
@@ -318,21 +327,8 @@
                                     "doCreate": true,
                                     "doFind": false,
                                     "label": "CCR_ContactType__c"
-                                },
-                                {
-                                    "isExactMatch": false,
-                                    "fieldName": "RecordTypeId",
-                                    "doCreate": true,
-                                    "doFind": false,
-                                    "label": "CaseType"
-                                },
-                                {
-                                    "isExactMatch": false,
-                                    "fieldName": "Subject",
-                                    "doCreate": true,
-                                    "doFind": false,
-                                    "label": "Subject"
                                 }
+
                             ]
                         }
                     ];
@@ -344,13 +340,7 @@
                     fallback: true
                 },
                 extraPrechatInfo: extraPrechatInfo,
-                extraPrechatFormDetails: extraPrechatFormDetails,
-                prepopulatedPrechatFields: {
-                    FirstName: document.getElementById('lastName').value,
-                    LastName: document.getElementById('lastName').value,
-                    Email: document.getElementById('email').value,
-                    Subject: document.getElementById('subject').value
-                }
+                extraPrechatFormDetails: extraPrechatFormDetails
             });
 
             console.log(extraPrechatInfo);
