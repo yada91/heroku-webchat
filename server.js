@@ -21,5 +21,5 @@ app.listen(app.get('port'), function() {
 
 app.get('/withoutlogin', function (req, res)
 {
-    res.render('index2.html');
+    res.render(_dirname + '/public/index2.html');
 });
