@@ -18,3 +18,8 @@ app.use(express.static(__dirname + '/public'));
 app.listen(app.get('port'), function() {
   console.log('Server listening on port %s', app.get('port'));
 });
+
+app.get('/withoutlogin', function (req, res)
+{
+    res.render('index2.html');
+});
