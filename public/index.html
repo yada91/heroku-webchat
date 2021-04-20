@@ -23,10 +23,6 @@
     @media screen and (min-width:480px) and (max-width:800px) {
         .modalContainer .showDockableContainer {
             zoom: 1.2 !important;
-            /*    height: 100% !important;
-                max-width: 100% !important;
-                margin: 0 !important;
-                border-radius: 0px !important;*/
         }
     }
 </style>
@@ -91,8 +87,8 @@
     var initESW = function (gslbBaseURL) {
         embedded_svc.settings.displayHelpButton = true; //Or false
         embedded_svc.settings.language = 'ko'; //For example, enter 'en' or 'en-US'
+        embedded_svc.settings.defaultMinimizedText = '상담 시작하기';
 
-        //embedded_svc.settings.defaultMinimizedText = '...'; //(Defaults to Chat with an Expert)
         //embedded_svc.settings.disabledMinimizedText = '...'; //(Defaults to Agent Offline)
 
         //embedded_svc.settings.loadingText = ''; //(Defaults to Loading)
