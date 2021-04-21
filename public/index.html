@@ -37,18 +37,9 @@
             <!--        KDCE_ExternalId__c: <input type='text' id="KDCE_ExternalId__c" value=""/><br/>-->
             성명: <input type='text' id="lastName" value=""/><br/>
             전화 번호: <input type='text' id="phone" value=""/><br/>
+            생년월일: <input type='date' id="birthday" value=""/><br/>
             문의 사항: <input type='text' id="subject" value=""/><br/>
-            <div>
-                문의 유형:
-                <select id="caseType">
-                    <option value="0121m000000c3yOAAQ">1-Inquiry/Critical Inquiry</option>
-                    <option value="0121m000000c3yLAAQ">2-Orders/Order On Behalf</option>
-                    <option value="0121m000000c3yNAAQ">3-Holder/Charger/Accessory</option>
-                    <option value="0121m000000c3xoAAA">6-Adverse Event</option>
-                    <option value="0121m000000c3yQAAQ">7-HeatStick</option>
-                    <option value="0121m000000c3yRAAQ">8-Program Support</option>
-                </select>
-            </div>
+
         </div>
         <div>
             <button type="button" id="startChat">Start Chat</button>
@@ -63,17 +54,6 @@
             KDCE_ExternalId__c: <input type='text' id="KDCE_ExternalId__c" value=""/><br/>
             성명: <input type='text' id="lastName2" value=""/><br/>
             문의 사항: <input type='text' id="subject2" value=""/><br/>
-            <div>
-                문의 유형:
-                <select id="caseType2">
-                    <option value="0121m000000c3yOAAQ">1-Inquiry/Critical Inquiry</option>
-                    <option value="0121m000000c3yLAAQ">2-Orders/Order On Behalf</option>
-                    <option value="0121m000000c3yNAAQ">3-Holder/Charger/Accessory</option>
-                    <option value="0121m000000c3xoAAA">6-Adverse Event</option>
-                    <option value="0121m000000c3yQAAQ">7-HeatStick</option>
-                    <option value="0121m000000c3yRAAQ">8-Program Support</option>
-                </select>
-            </div>
         </div>
         <div>
             <button type="button" id="startChatWithLogin">Start Chat</button>
@@ -188,14 +168,14 @@
                     "displayToAgent": false
                 },
                 {
+                    "label": "Birthday",
+                    "value": document.getElementById('birthday').value,
+                    "displayToAgent": false
+                },
+                {
                     "label": "Subject",
                     "value": document.getElementById('subject').value,
                     "displayToAgent": true
-                },
-                {
-                    "label": "CaseType",
-                    "value": document.getElementById('caseType').value,
-                    "displayToAgent": false
                 }
 
             ];
@@ -264,18 +244,18 @@
                             },
                             {
                                 "isExactMatch": false,
+                                "fieldName": "KDCE_SuppliedBirthday__c",
+                                "doCreate": true,
+                                "doFind": false,
+                                "label": "Birthday"
+                            },
+                            {
+                                "isExactMatch": false,
                                 "fieldName": "Subject",
                                 "doCreate": true,
                                 "doFind": false,
                                 "label": "Subject"
-                            },
-                            {
-                                "isExactMatch": false,
-                                "fieldName": "RecordTypeId",
-                                "doCreate": true,
-                                "doFind": false,
-                                "label": "CaseType"
-                            },
+                            }
                         ]
                     }
                 ];
@@ -343,11 +323,6 @@
                     "label": "Subject",
                     "value": document.getElementById('subject2').value,
                     "displayToAgent": true
-                },
-                {
-                    "label": "CaseType",
-                    "value": document.getElementById('caseType2').value,
-                    "displayToAgent": false
                 }
 
 
@@ -424,15 +399,7 @@
                                 "doCreate": true,
                                 "doFind": false,
                                 "label": "Subject"
-                            },
-                            {
-                                "isExactMatch": false,
-                                "fieldName": "RecordTypeId",
-                                "doCreate": true,
-                                "doFind": false,
-                                "label": "CaseType"
                             }
-
 
                         ]
                     }
