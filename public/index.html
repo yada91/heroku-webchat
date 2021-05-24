@@ -27,40 +27,6 @@
     }
 </style>
 <body>
-<div>
-    <div>
-        <p>Without Login</p>
-    </div>
-    <div>
-
-        <div style="margin-left: 30px;">
-            <!--        KDCE_ExternalId__c: <input type='text' id="KDCE_ExternalId__c" value=""/><br/>-->
-            성명: <input type='text' id="lastName" value=""/><br/>
-            전화 번호: <input type='text' id="phone" value=""/><br/>
-            생년월일: <input type='date' id="birthday" value=""/><br/>
-            문의 사항: <input type='text' id="subject" value=""/><br/>
-
-        </div>
-        <div>
-            <button type="button" id="startChat">Start Chat</button>
-        </div>
-    </div>
-    <div>
-        <p>Login</p>
-    </div>
-    <div>
-
-        <div style="margin-left: 30px;">
-            KDCE_ExternalId__c: <input type='text' id="KDCE_ExternalId__c" value=""/><br/>
-            성명: <input type='text' id="lastName2" value=""/><br/>
-            문의 사항: <input type='text' id="subject2" value=""/><br/>
-        </div>
-        <div>
-            <button type="button" id="startChatWithLogin">Start Chat</button>
-        </div>
-    </div>
-
-</div>
 
 <script type='text/javascript' src='https://service.force.com/embeddedservice/5.0/esw.min.js'></script>
 <script type='text/javascript'>
@@ -82,8 +48,89 @@
         //embedded_svc.settings.prepopulatedPrechatFields = {}; //Sets the auto-population of pre-chat form fields
         //embedded_svc.settings.fallbackRouting = []; //An array of button IDs, user IDs, or userId_buttonId
         //embedded_svc.settings.offlineSupportMinimizedText = '...'; //(Defaults to Contact Us)
+        //Source URL
+        let wetChatUrl = window.location.href;
+        let extraPrechatFormDetails = [
+            /**
+             * 고정 값
+             */
+            {
+                "label": "Source URL",
+                "value": wetChatUrl,
+                "displayToAgent": false
+            },
+            {
+                "label": "Status",
+                "value": "New",
+                "displayToAgent": false
+            },
+            {
+                "label": "Case Origin",
+                "value": "Chat",
+                "displayToAgent": false
+            },
+            {
+                "label": "CCR_ContactType__c",
+                "value": "Chat",
+                "displayToAgent": false
+            },
 
+        ];
 
+        //Salesforce 필드 매핑
+        let extraPrechatInfo =
+            [
+                {
+                    "entityName": "Contact",
+                    "showOnCreate": false,
+                    "entityFieldMaps": [{
+                        "isExactMatch": false,
+                        "fieldName": "FirstName",
+                        "doCreate": false,
+                        "doFind": false,
+                        "label": "First Name"
+                    }
+                    ]
+                },
+                {
+                    "entityName": "Case",
+                    "showOnCreate": true,
+                    "saveToTranscript": "CaseId",
+                    "entityFieldMaps": [
+                        {
+                            "isExactMatch": false,
+                            "fieldName": "KDEC_WebChatURL__c",
+                            "doCreate": true,
+                            "doFind": false,
+                            "label": "Source URL"
+                        },
+                        {
+                            "isExactMatch": false,
+                            "fieldName": "Status",
+                            "doCreate": true,
+                            "doFind": false,
+                            "label": "Status"
+                        },
+                        {
+                            "isExactMatch": false,
+                            "fieldName": "Origin",
+                            "doCreate": true,
+                            "doFind": false,
+                            "label": "Case Origin"
+                        },
+                        {
+                            "isExactMatch": false,
+                            "fieldName": "CCR_ContactType__c",
+                            "doCreate": true,
+                            "doFind": false,
+                            "label": "CCR_ContactType__c"
+                        }
+                    ]
+                }
+            ];
+
+        embedded_svc.settings.extraPrechatFormDetails = extraPrechatFormDetails;
+        embedded_svc.settings.extraPrechatInfo = extraPrechatInfo;
         embedded_svc.settings.enabledFeatures = ['LiveAgent'];
         embedded_svc.settings.entryFeature = 'LiveAgent';
 
@@ -103,6 +150,7 @@
             }
         );
 
+
     };
     if (!window.embedded_svc) {
         var s = document.createElement('script');
@@ -118,159 +166,9 @@
     }
 </script>
 
-<script type='text/javascript'>
+<!--<script type='text/javascript'>
     (function () {
-        //Source URL
-        let wetChatUrl = window.location.href;
-        let customerType;
-        //logout
-        document.getElementById('startChat').onclick = function () {
-            let extraPrechatFormDetails = [
-                /**
-                 * 고정 값
-                 */
-                {
-                    "label": "Source URL",
-                    "value": wetChatUrl,
-                    "displayToAgent": false
-                },
-                {
-                    "label": "Status",
-                    "value": "New",
-                    "displayToAgent": false
-                },
-                {
-                    "label": "Case Origin",
-                    "value": "Chat",
-                    "displayToAgent": false
-                }, {
-                    "label": "CCR_ContactType__c",
-                    "value": "Chat",
-                    "displayToAgent": false
-                },
-                /**
-                 *  Form에서 입력 받은 값
-                 *
-                 */
-                {
-                    "label": "First Name",
-                    "value": document.getElementById('lastName').value,
-                    "displayToAgent": false
-                },
-                {
-                    "label": "Last Name",
-                    "value": document.getElementById('lastName').value,
-                    "displayToAgent": true
-                },
-                {
-                    "label": "Phone",
-                    "value": document.getElementById('phone').value,
-                    "displayToAgent": false
-                },
-                {
-                    "label": "Birthday",
-                    "value": document.getElementById('birthday').value,
-                    "displayToAgent": false
-                },
-                {
-                    "label": "Subject",
-                    "value": document.getElementById('subject').value,
-                    "displayToAgent": true
-                }
 
-            ];
-
-            //Salesforce 필드 매핑
-            let extraPrechatInfo =
-                [
-                    {
-                        "entityName": "Contact",
-                        "showOnCreate": false,
-                        "entityFieldMaps": [{
-                            "isExactMatch": false,
-                            "fieldName": "FirstName",
-                            "doCreate": false,
-                            "doFind": false,
-                            "label": "First Name"
-                        }
-                        ]
-                    },
-                    {
-                        "entityName": "Case",
-                        "showOnCreate": true,
-                        "saveToTranscript": "CaseId",
-                        "entityFieldMaps": [
-                            {
-                                "isExactMatch": false,
-                                "fieldName": "KDEC_WebChatURL__c",
-                                "doCreate": true,
-                                "doFind": false,
-                                "label": "Source URL"
-                            },
-                            {
-                                "isExactMatch": false,
-                                "fieldName": "Status",
-                                "doCreate": true,
-                                "doFind": false,
-                                "label": "Status"
-                            },
-                            {
-                                "isExactMatch": false,
-                                "fieldName": "Origin",
-                                "doCreate": true,
-                                "doFind": false,
-                                "label": "Case Origin"
-                            },
-                            {
-                                "isExactMatch": false,
-                                "fieldName": "CCR_ContactType__c",
-                                "doCreate": true,
-                                "doFind": false,
-                                "label": "CCR_ContactType__c"
-                            },
-                            {
-                                "isExactMatch": false,
-                                "fieldName": "SuppliedName",
-                                "doCreate": true,
-                                "doFind": false,
-                                "label": "Last Name"
-                            },
-                            {
-                                "isExactMatch": false,
-                                "fieldName": "SuppliedPhone",
-                                "doCreate": true,
-                                "doFind": false,
-                                "label": "Phone"
-                            },
-                            {
-                                "isExactMatch": false,
-                                "fieldName": "KDCE_SuppliedBirthdayText__c",
-                                "doCreate": true,
-                                "doFind": false,
-                                "label": "Birthday"
-                            },
-                            {
-                                "isExactMatch": false,
-                                "fieldName": "Subject",
-                                "doCreate": true,
-                                "doFind": false,
-                                "label": "Subject"
-                            }
-                        ]
-                    }
-                ];
-
-            embedded_svc.liveAgentAPI.startChat({
-                directToAgentRouting: {
-                    buttonId: "5731m0000008OO5",
-                    fallback: true
-                },
-                extraPrechatInfo: extraPrechatInfo,
-                extraPrechatFormDetails: extraPrechatFormDetails
-            });
-            console.log(extraPrechatInfo);
-            console.log(extraPrechatFormDetails);
-        };
         //login
         document.getElementById('startChatWithLogin').onclick = function () {
             let extraPrechatFormDetails = [
@@ -419,7 +317,7 @@
         };
 
     })();
-</script>
+</script>-->
 
 </body>
 
